@@ -1,15 +1,63 @@
 package service;
 
-import java.time.LocalDate;
-import java.util.*;
 import entities.Product;
 import entities.ProductCategory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Warehouse {
-    public static void main(String[] args) {
-        List<Product> products = new ArrayList<>();
-        products.add(new Product("12","phone",5, ProductCategory.ELECTRONICS, LocalDate.now(),LocalDate.now()));
 
-        System.out.println("products: " + products);
+    public final List<Product> products;
+
+    public Warehouse() {
+        this.products = new ArrayList<>();
     }
-}
+
+    // add new product
+    public boolean addNewProduct(Product product) {
+        if (product.getName().isEmpty()) {
+            System.out.println("Product must have a name");
+            return false;
+        }
+
+        products.add(product);
+        System.out.println("Product successfully added");
+        return true;
+    }
+
+    // Edit an existing product
+    public Optional<Product> editProduct(int productId, String newName, int newRating, ProductCategory newCategory) {
+        Optional<Product> productToUpdate = products.stream()
+                .filter(product -> product.getProductId() == productId)
+                .findFirst();
+
+        if (productToUpdate.isPresent()) {
+            productToUpdate.get().setName(newName);
+            productToUpdate.get().setRating(newRating);
+            productToUpdate.get().setProductCategory(newCategory);
+            System.out.println("Product edited successfully");
+        } else {
+            System.out.println("product not found for editing");
+        }
+
+        return productToUpdate;
+    }
+
+    // get all products
+    public List<Product> getAllProducts (){
+       return  new ArrayList<>(products);
+    }
+
+    // get product by id
+
+    public Optional<Product> getPdtById(int productId){
+        return products.stream()
+                .filter(pdt->pdt.getProductId()== productId)
+                .findFirst();
+
+    }
+
+
+    }
+
