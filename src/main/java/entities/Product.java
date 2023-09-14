@@ -1,36 +1,37 @@
 package entities;
-import java.util.*;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Product {
 
+    private static int nextProductId = 1;
 
+    private final int productId;
     private  String name;
-    private String productId;
-    private int rating;
+    private  int rating;
+    private  ProductCategory category;
+    private final LocalDateTime dateCreated;
+    private LocalDateTime dateModified;
 
-    private ProductCategory category;
-
-    private LocalDate dateCreated;
-
-    private LocalDate dateModified;
-
-    public Product(String productId, String name, int rating, ProductCategory category, LocalDate dateCreated, LocalDate dateModified){
-        this.productId = productId;
+    public Product(String name, int rating, ProductCategory category) {
+        this.productId = nextProductId++;
         this.name = name;
         this.rating = rating;
         this.category = category;
-        this.dateCreated = LocalDate.now();
-        this.dateModified = LocalDate.now();
+        this.dateCreated = LocalDateTime.now();
+        this.dateModified = this.dateCreated;
     }
 
-    public String getProductId() {
+    public int getProductId() {
         return productId;
     }
 
     public String getName() {
         return name;
     }
+
+
     public int getRating() {
         return rating;
     }
@@ -38,13 +39,29 @@ public class Product {
     public ProductCategory getCategory() {
         return category;
     }
-    public LocalDate getDateCreated() {
+
+    public LocalDateTime getDateCreated() {
         return dateCreated;
     }
-    public LocalDate getDateModified() {
+
+    public LocalDateTime getDateModified() {
         return dateModified;
     }
 
+    public void updateDateModified() {
+        this.dateModified = LocalDateTime.now();
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRating(int rating){
+        this.rating = rating;
+    }
+
+    public void setProductCategory(ProductCategory category){
+        this.category = category;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,16 +78,12 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "name='" + name + '\'' +
-                ", productId='" + productId + '\'' +
+                "productId=" + productId +
+                ", name='" + name + '\'' +
                 ", rating=" + rating +
                 ", category=" + category +
                 ", dateCreated=" + dateCreated +
                 ", dateModified=" + dateModified +
                 '}';
     }
-
-
 }
-
-
