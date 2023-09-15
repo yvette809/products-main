@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class Warehouse {
 
-    private final List<Product> products;
+    public final List<Product> products;
 
     public Warehouse() {
         this.products = new ArrayList<>();
