@@ -4,6 +4,7 @@ import entities.Product;
 import entities.ProductCategory;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,7 +28,8 @@ public class Main {
 
 // edit product
 
-        warehouse.editProduct(1, "trousers", 5, ProductCategory.CLOTHING);
+        warehouse.editProduct(1, "skirts", 7, ProductCategory.CLOTHING);
+        warehouse.editProduct(2, "machine", 6, ProductCategory.ELECTRONICS);
 
         // Print the updated products
         //warehouse.products.forEach(product -> System.out.println("Product: " + product));
@@ -46,6 +48,30 @@ public class Main {
         Optional<Product> getPdtById =  warehouse.getProductById(3);
         System.out.println("The product by Id is :" + getPdtById);
 
+        // get product by category
+
+        ProductCategory category = ProductCategory.OTHER;
+
+        List <Product> productsInCategory = warehouse.getProductsByCategory((category));
+         for(Product pdt:productsInCategory)
+             System.out.println("The products by category are: " + pdt);
+
+         // get products created after a given date
+        LocalDateTime dateToCompare = LocalDateTime.of(2023, 9, 15, 0, 0); // Replace with the desired date
+
+        List<Product> productsCreatedAfterDate = warehouse.getProductsCreatedAfterDateSortedByNewest(dateToCompare);
+
+        // Print the products created after the specified date, sorted by newest
+        for (Product product : productsCreatedAfterDate) {
+            System.out.println("Products created after a certain date are: " + product);
+        }
+
+        // get products modified after creation
+
+        List<Product> getModifiedProducts = warehouse.getProductsModifiedAfterCreation();
+        for(Product product: getModifiedProducts){
+            System.out.println("The modified products are: " + product);
+        }
     }
 
 
