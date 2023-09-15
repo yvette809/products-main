@@ -3,8 +3,10 @@ package service;
 import entities.Product;
 import entities.ProductCategory;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -71,6 +73,30 @@ public class Main {
         List<Product> getModifiedProducts = warehouse.getProductsModifiedAfterCreation();
         for(Product product: getModifiedProducts){
             System.out.println("The modified products are: " + product);
+        }
+
+        // get categories with products
+
+        Set<ProductCategory> getCategory = warehouse.getCategoriesWithProducts();
+        for(ProductCategory cat: getCategory){
+            System.out.println("The categories are: " + cat);
+        }
+
+        // get products in a given category
+        Map<ProductCategory, Long> productCountByCategory = warehouse.getProductCountByCategory();
+
+        // Print the number of products in each category
+        for (Map.Entry<ProductCategory, Long> entry : productCountByCategory.entrySet()) {
+            System.out.println("Category: " + entry.getKey() + ", Product Count: " + entry.getValue());
+        }
+
+        // get product map
+
+        Map<Character, Long> productCountByStartingLetter = warehouse.getProductCountByStartingLetter();
+
+        // Print the count of products for each starting letter
+        for (Map.Entry<Character, Long> entry : productCountByStartingLetter.entrySet()) {
+            System.out.println("Starting Letter: " + entry.getKey() + ", Product Count: " + entry.getValue());
         }
     }
 

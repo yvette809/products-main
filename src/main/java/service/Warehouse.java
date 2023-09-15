@@ -4,10 +4,7 @@ import entities.Product;
 import entities.ProductCategory;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Comparator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Warehouse {
@@ -82,5 +79,30 @@ public class Warehouse {
         return products.stream()
                 .filter(product -> product.getDateModified().isAfter(product.getDateCreated()))
                 .collect(Collectors.toList());
+    }
+
+    // get all categories that has minimum one product attached
+    public Set<ProductCategory> getCategoriesWithProducts() {
+        return products.stream()
+                .map(Product::getCategory)
+                .filter(Objects::nonNull) // Filter out null categories (if any)
+                .collect(Collectors.toSet());
+    }
+
+    // get all products found in a category
+    public Map<ProductCategory, Long> getProductCountByCategory() {
+        return products.stream()
+                .collect(Collectors.groupingBy(Product::getCategory, Collectors.counting()));
+    }
+
+    // get product count by starting letter
+    public Map<Character, Long> getProductCountByStartingLetter() {
+        return products.stream()
+                .map(Product::getName)
+                .collect(Collectors.groupingBy(name -> name.charAt(0), Collectors.counting()));
+
+        // get products with max rating
+
+
     }
 }
