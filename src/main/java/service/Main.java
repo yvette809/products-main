@@ -43,7 +43,7 @@ public class Main {
         System.out.println("The products are: " + getAllProducts);
 
         // get product by id
-        Optional<Product> getPdtById =  warehouse.getPdtById(3);
+        Optional<Product> getPdtById =  warehouse.getProductById(3);
         System.out.println("The product by Id is :" + getPdtById);
 
     }
