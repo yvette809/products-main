@@ -19,6 +19,7 @@ public class Main {
         Product product6 = new Product("Scooter", 8, ProductCategory.OTHER);
         Product product7 = new Product("Pen", 3, ProductCategory.OTHER);
         Product product8 = new Product("skirt", 9, ProductCategory.CLOTHING);
+        Product product9 = new Product("Bag", 6, ProductCategory.OTHER);
         warehouse.addNewProduct(product1);
         warehouse.addNewProduct(product2);
         warehouse.addNewProduct(product3);
@@ -27,10 +28,11 @@ public class Main {
         warehouse.addNewProduct(product6);
         warehouse.addNewProduct(product7);
         warehouse.addNewProduct(product8);
+        warehouse.addNewProduct(product9);
 
 // edit product
 
-        warehouse.editProduct(1, "skirts", 7, ProductCategory.CLOTHING);
+        warehouse.editProduct(1, "tracksuits", 6, ProductCategory.CLOTHING);
         warehouse.editProduct(2, "machine", 6, ProductCategory.ELECTRONICS);
 
         // Print the updated products

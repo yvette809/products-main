@@ -56,7 +56,11 @@ public class Product {
     }
 
     public void setRating(int rating){
-        this.rating = rating;
+        if(rating>=0 && rating<=10){
+            this.rating = rating;
+        }
+
+
     }
 
     public void setProductCategory(ProductCategory category){

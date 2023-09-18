@@ -15,33 +15,41 @@ public class Warehouse {
         this.products = new ArrayList<>();
     }
 
-    public boolean addNewProduct(Product product) {
-        if (product.getName().isEmpty()) {
-            System.out.println("Product must have a name");
-            return false;
+    public void addNewProduct(Product product) {
+        if (product.getName()== null || product.getName().isEmpty()) {
+           throw new IllegalArgumentException("product name cannot be empty");
+
         }
 
         products.add(product);
         System.out.println("Product successfully added");
-        return true;
+
     }
 
-    public Optional<Product> editProduct(int productId, String newName, int newRating, ProductCategory newCategory) {
-        Optional<Product> productToUpdate = products.stream()
-                .filter(product -> product.getProductId() == productId)
-                .findFirst();
+    public void editProduct(int productId, String name, int rating, ProductCategory category) {
+        Optional<Product> productToUpdate = getProductById(productId);
 
         if (productToUpdate.isPresent()) {
-            productToUpdate.get().setName(newName);
-            productToUpdate.get().setRating(newRating);
-            productToUpdate.get().setProductCategory(newCategory);
-            productToUpdate.get().updateDateModified();
+            Product product = productToUpdate.get();
+            if (name != null && !name.isEmpty()) {
+                product.setName(name);
+            }
+            if (category != null) {
+                product.setProductCategory(category);
+            }
+            if (rating >= 0 && rating <= 10) {
+                product.setRating(rating);
+            }
+
+            product.updateDateModified();
             System.out.println("Product edited successfully");
+
         } else {
-            System.out.println("product not found for editing");
+           throw new IllegalArgumentException("Product of ID " + productId + " not found");
         }
 
-        return productToUpdate;
+
+
     }
 
     // get all products
@@ -51,7 +59,7 @@ public class Warehouse {
 
     // get product by id
     public Optional<Product> getProductById(int productId) {
-        return products.stream()
+        return getAllProducts().stream()
                 .filter(product -> product.getProductId() == productId)
                 .findFirst();
     }
@@ -60,7 +68,7 @@ public class Warehouse {
     public List<Product> getProductsByCategory(ProductCategory category){
         return  getAllProducts().stream()
                 .filter(pdt->pdt.getCategory()== category)
-                .sorted(Comparator.comparing(Product::getName))
+                .sorted((p1,p2)->p1.getName().compareToIgnoreCase(p2.getName()))
                 .collect(Collectors.toList());
     }
 
@@ -76,14 +84,14 @@ public class Warehouse {
 
     // get all products modified after creation
     public List<Product> getProductsModifiedAfterCreation() {
-        return products.stream()
+        return getAllProducts().stream()
                 .filter(product -> product.getDateModified().isAfter(product.getDateCreated()))
                 .collect(Collectors.toList());
     }
 
     // get all categories that has minimum one product attached
     public Set<ProductCategory> getCategoriesWithProducts() {
-        return products.stream()
+        return getAllProducts().stream()
                 .map(Product::getCategory)
                 .filter(Objects::nonNull) // Filter out null categories (if any)
                 .collect(Collectors.toSet());
