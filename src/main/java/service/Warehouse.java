@@ -3,6 +3,7 @@ package service;
 import entities.Product;
 import entities.ProductCategory;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -105,12 +106,29 @@ public class Warehouse {
 
     // get product count by starting letter
     public Map<Character, Long> getProductCountByStartingLetter() {
-        return products.stream()
+        return getAllProducts().stream()
                 .map(Product::getName)
                 .collect(Collectors.groupingBy(name -> name.charAt(0), Collectors.counting()));
 
-        // get products with max rating
-
-
     }
-}
+
+    // get products with max rating
+
+    public List<Product> getProductsRatingCreatedThisMonthSortedByDate() {
+        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime firstDayOfMonth = LocalDateTime.of(currentDate.getYear(), currentDate.getMonth(), 1,0,0);
+        LocalDateTime endOfMonth = LocalDateTime.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getMonth().maxLength(), 23, 59);
+
+        return getAllProducts().stream()
+                .filter(product -> product.getRating() == 10)
+                .filter(product -> {
+                    LocalDateTime creationDateTime = product.getDateCreated();
+                    return creationDateTime.isAfter(firstDayOfMonth) && creationDateTime.isBefore(endOfMonth);
+                })
+                .sorted(Comparator.comparing(Product::getDateModified).reversed())
+                .collect(Collectors.toList());
+    }
+
+
+
+        }

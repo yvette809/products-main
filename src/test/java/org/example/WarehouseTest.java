@@ -129,6 +129,16 @@ class WarehouseTest {
     assertEquals(1, productsCountByStartingLetter.get('B'));
     assertEquals(1, productsCountByStartingLetter.get('C'));
     assertEquals(1, productsCountByStartingLetter.get('d'));
-    System.out.println(productsCountByStartingLetter);
+
 }
+    @Test
+    public void testGetProductsRatingCreatedThisMonthSortedByDate() {
+        // Retrieve products with max rating (10), created this month, and sorted by date
+        Product product = new Product("pen",10,ProductCategory.OTHER);
+        warehouse.addNewProduct(product);
+        List<Product> products = warehouse.getProductsRatingCreatedThisMonthSortedByDate();
+
+        assertEquals(1, products.size());
+        assertEquals("pen", products.get(0).getName());
+    }
 }
