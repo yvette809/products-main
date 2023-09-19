@@ -4,10 +4,8 @@ import entities.Product;
 import entities.ProductCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import service.Warehouse;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -51,12 +49,23 @@ class WarehouseTest {
 
     }
     @Test
+    public void testAddProductWithEmptyName(){
+        Product product = new Product("",4,ProductCategory.OTHER);
+        assertThrows(IllegalArgumentException.class, ()-> warehouse.addNewProduct(product));
+    }
+    @Test
     public void testEditProduct(){
         warehouse.editProduct(1,"New laptop",9,null);
         Optional<Product> editedProduct = warehouse.getProductById(1);
         assertTrue(editedProduct.isPresent());
         assertEquals("New laptop", editedProduct.get().getName());
         assertEquals(9, editedProduct.get().getRating());
+
+    }
+    @Test
+    public void testEditedProductNotFound(){
+        assertThrows(IllegalArgumentException.class,()-> warehouse.editProduct(10,"New laptop",9,null));
+
 
     }
 @Test
@@ -78,11 +87,22 @@ class WarehouseTest {
 }
 
 @Test
+public void testGetProductByIdNotFound(){
+        Optional<Product> product = warehouse.getProductById(10);
+        assertFalse(product.isPresent());
+}
+
+@Test
     public void testGetProductsByCategory(){
         List<Product> electronicProducts = warehouse.getProductsByCategory(ProductCategory.ELECTRONICS);
         assertEquals(2, electronicProducts.size());
         assertEquals("laptop", electronicProducts.get(0).getName());
         assertEquals("smart phone", electronicProducts.get(1).getName());
+}
+@Test
+public void testGetProductsByNonExistentCategory(){
+        List<Product> products = warehouse.getProductsByCategory(ProductCategory.CLOTHING);
+        assertEquals(0,products.size());
 }
 
 @Test
@@ -92,6 +112,13 @@ class WarehouseTest {
         assertEquals(6, productsCreatedAfterDate.size());
 
 }
+    @Test
+    public void testGetProductsCreatedAfterNoMatches() {
+        // Attempt to retrieve products created after a date with no matches
+        LocalDateTime futureDate = LocalDateTime.now().plusDays(30); // A date in the future
+        List<Product> products = warehouse.getProductsCreatedAfterDateSortedByNewest(futureDate);
+        assertEquals(0, products.size());
+    }
 
 @Test
     public void testGetProductsModifiedAfterCreation(){
@@ -104,6 +131,13 @@ class WarehouseTest {
 
 
 }
+    @Test
+    public void testGetModifiedProductsNoMatches() {
+        // Attempt to retrieve modified products when there are no modifications
+        List<Product> modifiedProducts = warehouse.getProductsModifiedAfterCreation();
+        assertEquals(0, modifiedProducts.size());
+    }
+
 
 @Test
     public void testGetCategoriesWithProducts(){
@@ -114,6 +148,12 @@ class WarehouseTest {
         assertTrue(categoriesWithProducts.contains(ProductCategory.OTHER));
 
 }
+    @Test
+    public void testGetCategoriesWithNoProducts() {
+        // Attempt to retrieve categories with no products linked
+        Set<ProductCategory> categoriesWithProducts = warehouse.getCategoriesWithProducts();
+        assertEquals(0, categoriesWithProducts.size());
+    }
 @Test
     public void testGetProductCountByCategory(){
         Map<ProductCategory,Long> productsCountByCategory = warehouse.getProductCountByCategory();
@@ -140,5 +180,12 @@ class WarehouseTest {
 
         assertEquals(1, products.size());
         assertEquals("pen", products.get(0).getName());
+    }
+
+    @Test
+    public void testGetProductsMaxRatingCreatedThisMonthSortedByDateNoMatches() {
+        // Attempt to retrieve products with max rating, created this month, with no matches
+        List<Product> products = warehouse.getProductsRatingCreatedThisMonthSortedByDate();
+        assertEquals(0, products.size());
     }
 }
