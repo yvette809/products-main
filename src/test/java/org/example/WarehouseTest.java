@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import service.Warehouse;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,5 +82,25 @@ class WarehouseTest {
         assertEquals(2, electronicProducts.size());
         assertEquals("laptop", electronicProducts.get(0).getName());
         assertEquals("smart phone", electronicProducts.get(1).getName());
+}
+
+@Test
+    public void testGetProductsCreatedAfterDateSortedByNewest(){
+    LocalDateTime dateToCompare = LocalDateTime.of(2023, 9, 11, 0, 0);
+        List<Product> productsCreatedAfterDate = warehouse.getProductsCreatedAfterDateSortedByNewest(dateToCompare);
+        assertEquals(6, productsCreatedAfterDate.size());
+
+}
+
+@Test
+    public void testGetProductsModifiedAfterCreation(){
+        warehouse.editProduct(1,"old laptop",7,ProductCategory.ELECTRONICS);
+        warehouse.editProduct(3,"ledger",7,ProductCategory.BOOKS);
+        List<Product> productsModifiedAfterCreation = warehouse.getProductsModifiedAfterCreation();
+        assertEquals(2, productsModifiedAfterCreation.size());
+        assertEquals("old laptop", productsModifiedAfterCreation.get(0).getName());
+        assertEquals(7, productsModifiedAfterCreation.get(1).getRating());
+
+
 }
 }
