@@ -10,8 +10,9 @@ import service.Warehouse;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
+import java.util.Set;
 
 
 class WarehouseTest {
@@ -102,5 +103,32 @@ class WarehouseTest {
         assertEquals(7, productsModifiedAfterCreation.get(1).getRating());
 
 
+}
+
+@Test
+    public void testGetCategoriesWithProducts(){
+        Set<ProductCategory> categoriesWithProducts = warehouse.getCategoriesWithProducts();
+        assertEquals(3,categoriesWithProducts.size());
+        assertTrue(categoriesWithProducts.contains(ProductCategory.ANIMALS));
+        assertTrue(categoriesWithProducts.contains(ProductCategory.ELECTRONICS));
+        assertTrue(categoriesWithProducts.contains(ProductCategory.OTHER));
+
+}
+@Test
+    public void testGetProductCountByCategory(){
+        Map<ProductCategory,Long> productsCountByCategory = warehouse.getProductCountByCategory();
+    // Assert the counts for specific categories
+    assertEquals(2, productsCountByCategory.get(ProductCategory.ELECTRONICS));
+    assertEquals(2, productsCountByCategory.get(ProductCategory.ANIMALS));
+
+}
+
+@Test
+    public void testGetProductCountByStartingLetter(){
+    Map<Character, Long> productsCountByStartingLetter = warehouse.getProductCountByStartingLetter();
+    assertEquals(1, productsCountByStartingLetter.get('B'));
+    assertEquals(1, productsCountByStartingLetter.get('C'));
+    assertEquals(1, productsCountByStartingLetter.get('d'));
+    System.out.println(productsCountByStartingLetter);
 }
 }
