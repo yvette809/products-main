@@ -76,18 +76,30 @@ public class Warehouse {
     // get all products created after a given date. New products then last
 
     public List<Product> getProductsCreatedAfterDateSortedByNewest(LocalDateTime date){
-        return getAllProducts().stream()
+        if(date==null){
+            throw new IllegalArgumentException("Date Cannot be null");
+        }
+        List<Product> filteredProducts =  getAllProducts().stream()
                 .filter(product -> product.getDateCreated().isAfter(date))
                 .sorted(Comparator.comparing(Product::getDateCreated).reversed())
                 .collect(Collectors.toList());
+
+        if(filteredProducts.isEmpty()){
+            throw new IllegalArgumentException("No product found after the specified date: " + date);
+        }
+        return filteredProducts;
     }
 
 
     // get all products modified after creation
     public List<Product> getProductsModifiedAfterCreation() {
-        return getAllProducts().stream()
+        List<Product> modifiedProducts =  getAllProducts().stream()
                 .filter(product -> product.getDateModified().isAfter(product.getDateCreated()))
                 .collect(Collectors.toList());
+        if(modifiedProducts.isEmpty()){
+            throw new IllegalArgumentException("No products modified after creation found");
+        }
+        return modifiedProducts;
     }
 
     // get all categories that has minimum one product attached

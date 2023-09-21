@@ -115,7 +115,7 @@ public void testGetProductsByNonExistentCategory(){
     @Test
     public void testGetProductsCreatedAfterNoMatches() {
         // Attempt to retrieve products created after a date with no matches
-        LocalDateTime futureDate = LocalDateTime.now().plusDays(30); // A date in the future
+        LocalDateTime futureDate = LocalDateTime.now().plusDays(10); // A date in the future
         List<Product> products = warehouse.getProductsCreatedAfterDateSortedByNewest(futureDate);
         assertEquals(0, products.size());
     }
