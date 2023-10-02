@@ -2,7 +2,6 @@ package service;
 
 import entities.Product;
 import entities.ProductCategory;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -11,12 +10,15 @@ import java.util.stream.Collectors;
 public class Warehouse {
 
     public final List<Product> products;
+    //private int maxProductId = 0;
 
     public Warehouse() {
         this.products = new ArrayList<>();
     }
 
     public void addNewProduct(Product product) {
+        int productId = generateUniqueId();
+        product.setProductId(productId);
         if (product.getName()== null || product.getName().isEmpty()) {
            throw new IllegalArgumentException("product name cannot be empty");
 
@@ -25,6 +27,10 @@ public class Warehouse {
         products.add(product);
         System.out.println("Product successfully added");
 
+    }
+
+    private int generateUniqueId(){
+        return products.size() + 1;
     }
 
     public void editProduct(int productId, String name, int rating, ProductCategory category) {
@@ -79,27 +85,22 @@ public class Warehouse {
         if(date==null){
             throw new IllegalArgumentException("Date Cannot be null");
         }
-        List<Product> filteredProducts =  getAllProducts().stream()
+        return getAllProducts().stream()
                 .filter(product -> product.getDateCreated().isAfter(date))
                 .sorted(Comparator.comparing(Product::getDateCreated).reversed())
                 .collect(Collectors.toList());
 
-        if(filteredProducts.isEmpty()){
-            throw new IllegalArgumentException("No product found after the specified date: " + date);
-        }
-        return filteredProducts;
+
     }
 
 
     // get all products modified after creation
     public List<Product> getProductsModifiedAfterCreation() {
-        List<Product> modifiedProducts =  getAllProducts().stream()
+       return  getAllProducts().stream()
                 .filter(product -> product.getDateModified().isAfter(product.getDateCreated()))
                 .collect(Collectors.toList());
-        if(modifiedProducts.isEmpty()){
-            throw new IllegalArgumentException("No products modified after creation found");
-        }
-        return modifiedProducts;
+
+
     }
 
     // get all categories that has minimum one product attached

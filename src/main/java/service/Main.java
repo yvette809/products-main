@@ -2,11 +2,9 @@ package service;
 
 import entities.Product;
 import entities.ProductCategory;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -30,6 +28,7 @@ public class Main {
         warehouse.addNewProduct(product8);
         warehouse.addNewProduct(product9);
 
+
 // edit product
 
         warehouse.editProduct(1, "tracksuits", 6, ProductCategory.CLOTHING);
@@ -39,28 +38,27 @@ public class Main {
         //warehouse.products.forEach(product -> System.out.println("Product: " + product));
 
 
-
         for (Product product : warehouse.products) {
             System.out.println("Product: " + product);
         }
 
         // get all products
-        List <Product> getAllProducts =  warehouse.getAllProducts();
+        List<Product> getAllProducts = warehouse.getAllProducts();
         System.out.println("The products are: " + getAllProducts);
 
         // get product by id
-        Optional<Product> getPdtById =  warehouse.getProductById(3);
+        Optional<Product> getPdtById = warehouse.getProductById(3);
         System.out.println("The product by Id is :" + getPdtById);
 
         // get product by category
 
         ProductCategory category = ProductCategory.OTHER;
 
-        List <Product> productsInCategory = warehouse.getProductsByCategory((category));
-         for(Product pdt:productsInCategory)
-             System.out.println("The products by category are: " + pdt);
+        List<Product> productsInCategory = warehouse.getProductsByCategory((category));
+        for (Product pdt : productsInCategory)
+            System.out.println("The products by category are: " + pdt);
 
-         // get products created after a given date
+        // get products created after a given date
         LocalDateTime dateToCompare = LocalDateTime.of(2023, 9, 15, 0, 0); // Replace with the desired date
 
         List<Product> productsCreatedAfterDate = warehouse.getProductsCreatedAfterDateSortedByNewest(dateToCompare);
@@ -73,14 +71,14 @@ public class Main {
         // get products modified after creation
 
         List<Product> getModifiedProducts = warehouse.getProductsModifiedAfterCreation();
-        for(Product product: getModifiedProducts){
+        for (Product product : getModifiedProducts) {
             System.out.println("The modified products are: " + product);
         }
 
         // get categories with products
 
         Set<ProductCategory> getCategory = warehouse.getCategoriesWithProducts();
-        for(ProductCategory cat: getCategory){
+        for (ProductCategory cat : getCategory) {
             System.out.println("The categories are: " + cat);
         }
 

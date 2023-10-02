@@ -5,17 +5,15 @@ import java.util.Objects;
 
 public class Product {
 
-    private static int nextProductId = 1;
-
-    private final int productId;
-    private  String name;
-    private  int rating;
-    private  ProductCategory category;
+    private int productId;
+    private String name;
+    private int rating;
+    private ProductCategory category;
     private final LocalDateTime dateCreated;
     private LocalDateTime dateModified;
 
     public Product(String name, int rating, ProductCategory category) {
-        this.productId = nextProductId++;
+        setProductId(productId);
         this.name = name;
         this.rating = rating;
         this.category = category;
@@ -51,21 +49,28 @@ public class Product {
     public void updateDateModified() {
         this.dateModified = LocalDateTime.now();
     }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setRating(int rating){
-        if(rating>=0 && rating<=10){
+    public void setProductId(int productId) {
+        this.productId = productId;
+
+    }
+
+    public void setRating(int rating) {
+        if (rating >= 0 && rating <= 10) {
             this.rating = rating;
         }
 
 
     }
 
-    public void setProductCategory(ProductCategory category){
+    public void setProductCategory(ProductCategory category) {
         this.category = category;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
